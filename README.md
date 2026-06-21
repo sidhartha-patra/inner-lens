@@ -1,89 +1,124 @@
-# 🔮 Inner Lens — AI Self-Discovery from your birth date
+# 🔮 Inner Lens — Astrology, Vedic & Self-Discovery
 
-A small, dependency-free web app that turns the viral **“9 AI prompts”** self-discovery
-trend into an interactive tool. Enter a birth date and Inner Lens reads your
-**personality, recurring patterns, strengths, life timing, relationships, career direction,
-inner conflicts, purpose and future growth** — blending psychology, numerology logic and
-behavioural pattern mapping.
+A full, dependency-light **astrology web app**. Enter your birth details and Inner Lens
+computes a real **Western natal chart**, your **Vedic (Jyotish)** chart with nakshatras and
+the **Vimshottari Dasha** timeline, current **transits**, relationship **compatibility**, a
+**numerology** self-discovery profile, and optional **grounded AI readings** — including a
+local server that runs **Claude Opus 4.8 via the GitHub Copilot CLI**.
 
 > A mirror, not a fortune teller. For reflection and entertainment — it does not predict the future.
 
-**Live demo:** _enable GitHub Pages on this repo (Settings → Pages → Source: GitHub Actions)._
+**Live demo:** https://sidhartha-patra.github.io/inner-lens/
 
 ---
 
-## What it does
+## Features
 
-The app is built around the nine reflective "decoders" from the trend:
+| Tab | What you get |
+| --- | --- |
+| **Overview** | Big-three (Sun · Moon · Rising), an interactive SVG chart wheel, and a composed natal reading. |
+| **Western** | Accurate planetary positions, Ascendant, Midheaven, Placidus houses and aspects — with **DST-correct** timezones resolved from your birth city. |
+| **Vedic** | Sidereal (Lahiri ayanamsa) chart, whole-sign houses, your birth **nakshatra** + pada, and the full **Vimshottari Dasha** (mahadasha + antardasha) timeline. |
+| **Transits** | Today's planets measured against your natal chart — the current astrological "weather". |
+| **Compatibility** | **Synastry** between two charts: inter-aspects and a 0–100 relational score. |
+| **Numerology** | Life Path, Personal Year, pinnacles, challenges, and the nine viral "self-discovery" decoders with copy-paste prompts. |
 
-1. **Life Blueprint Decoder** — core traits, hidden strengths, blind spots, long-term purpose
-2. **Personality Pattern Revealer** — recurring emotional, behavioural & decision-making patterns
-3. **Strength & Weakness Breakdown** — natural advantages vs internal weaknesses
-4. **Life Timing Analyzer** — life phases, past turning points & upcoming periods
-5. **Relationship Mirror** — attachment tendencies, emotional needs & conflict triggers
-6. **Career Alignment Scanner** — where you thrive vs what drains you
-7. **Inner Conflict Decoder** — internal contradictions and why you feel torn
-8. **Purpose Clarifier** — the single theme your life keeps circling
-9. **Future Pattern Forecast** — growth lessons & mindset shifts (not predictions)
+Every reading can be **grounded by an LLM**: the app feeds your real placements into the model
+so the AI reading quotes your actual chart (e.g. *"Sun conjunct Jupiter in the 9th… Pluto on the Ascendant"*).
 
-## Three ways to read
+## Accuracy & method
 
-- **Built-in engine (offline).** Computes a real numerology + zodiac profile (Life Path,
-  Personal Year, pinnacles, challenges, sun sign, element, modality, Chinese zodiac) and
-  composes each reading. No account, no network, no API key.
-- **Copy the prompt.** Every card carries the exact viral prompt pre-filled with your date —
-  copy it into Grok, ChatGPT, Claude or Gemini and read it in your own AI tool.
-- **Live AI (optional).** Bring your own OpenAI-compatible API key (OpenAI, OpenRouter, Groq, …).
-  It's stored **only in your browser** (localStorage) and sent **only** to the provider you choose.
+- **Ephemeris:** [`circular-natal-horoscope-js`](https://www.npmjs.com/package/circular-natal-horoscope-js) — planetary longitudes verified against an independent Meeus solar calculation to **< 0.05°**.
+- **Timezones:** resolved from birth latitude/longitude via `tz-lookup` + `moment-timezone`, so historical **DST** is handled correctly (the #1 source of wrong Ascendants in toy apps).
+- **Vedic:** sidereal longitudes = tropical − **Lahiri** ayanamsa (computed per-date), driving rasis, 27 nakshatras/padas and the 120-year Vimshottari dasha cycle.
+
+## Live AI readings (optional)
+
+Open **Live AI ⚙** and pick a provider. Keys are stored **only in your browser** (localStorage)
+and sent **only** to the provider you choose.
+
+### Option A — Local Opus 4.8 (GitHub Copilot CLI)
+
+Run Claude Opus 4.8 locally through the Copilot CLI — no API key, nothing leaves your machine
+except the chart facts you send to the model.
+
+```bash
+npm run server     # starts http://localhost:8765  (leave it running)
+```
+
+Then in the app: **Live AI → "Copilot Opus 4.8 (local)" → Save**. The server is an
+OpenAI-compatible proxy (`/v1/chat/completions`) that shells out to:
+
+```
+copilot -p "<prompt>" --model claude-opus-4.8 -s --disable-builtin-mcps \
+        --no-custom-instructions --no-ask-user --disable-mcp-server <each configured server>
+```
+
+It auto-discovers and disables your `~/.copilot` MCP servers so a request returns in ~10s
+of pure model output instead of hanging on MCP startup. Configure the port with
+`OPUS_PROXY_PORT`.
+
+> The deployed HTTPS site can still call `http://localhost:8765` — browsers exempt
+> `localhost` from mixed-content blocking.
+
+### Option B — Bring your own key
+
+OpenAI, OpenRouter, Groq, or any OpenAI-compatible endpoint.
 
 ## Privacy
 
-Everything runs client-side. Your birth date and name never leave your browser, and there is
-no backend. If you opt into Live AI, your prompt and your key go directly to the AI provider
-you configured — and nowhere else.
+Chart math runs entirely in your browser. The only network call the core app makes is to a
+free geocoding API to turn a **city name** into coordinates — nothing else about you is sent.
+Live AI is opt-in. After the first visit the app works **offline** (PWA / service worker).
 
 ## Run locally
 
-It's a static site — just serve the folder:
-
 ```bash
-# Python
-python -m http.server 8080
-# or Node
-npx serve .
+npm install
+npm run dev        # http://localhost:5173  (hot reload)
+npm run build      # production build -> dist/
+npm run preview    # serve the production build
+npm test           # numerology + astrology engine tests
+npm run server     # local Opus 4.8 proxy (needs GitHub Copilot CLI)
 ```
-
-Then open <http://localhost:8080>.
 
 ## Project structure
 
 ```
-index.html
-assets/
-  css/styles.css
-  js/
-    data.js         meaning tables (numbers, signs, elements, personal years)
-    numerology.js   life path, pinnacles, challenges, personal year, name numbers
-    zodiac.js       sun sign, element, modality, Chinese zodiac
-    prompts.js      the nine prompt templates
-    decoders.js     composes the nine readings from the profile
-    ai.js           optional OpenAI-compatible live client
-    app.js          UI wiring & rendering
-scripts/sanity.mjs  node smoke test for the engine
-.github/workflows/deploy-pages.yml
+index.html                 app shell + birth form
+src/
+  main.js                  controller: form, computation, tabbed UI, AI
+  styles.css               cosmic theme
+  engine/
+    astro.js               natal chart (wraps circular-natal-horoscope-js)
+    vedic.js               Lahiri sidereal, nakshatras, Vimshottari dasha
+    transits.js            current transits vs natal
+    synastry.js            two-chart compatibility
+    aspects.js             angular aspect matching
+    interpretations.js     reading composers + content tables
+    numerology.js / zodiac.js / data.js / decoders.js / prompts.js
+  services/
+    geocode.js             city -> lat/lon (Open-Meteo, no key)
+    ai.js                  OpenAI-compatible client + grounded prompts
+  ui/wheel.js              SVG chart wheel (@astrodraw/astrochart)
+server/opus-proxy.mjs      local Opus 4.8 OpenAI-compatible server
+public/                    manifest, service worker, icon
+scripts/                   sanity.mjs, astro-test.mjs (engine tests)
+.github/workflows/         build + deploy to GitHub Pages
 ```
 
 ## Tech
 
-Vanilla HTML, CSS and ES modules. **No build step, no dependencies.** Deploys straight to
-GitHub Pages via the included Actions workflow.
+Vanilla JS + **Vite** (no UI framework). Deps: `circular-natal-horoscope-js` (ephemeris +
+timezones) and `@astrodraw/astrochart` (wheel). Builds to a static site, auto-deployed to
+GitHub Pages via Actions.
 
 ## Credits & disclaimer
 
-Concept inspired by the viral "9 AI prompts" shared by Dipti Sharma and reporting in
-Mint, Moneycontrol and others. This project is an independent, open-source reinterpretation
-for self-reflection and entertainment. It is **not** astrology advice, psychological diagnosis,
-or prediction of future events.
+Astronomy/timezones by circular-natal-horoscope-js; chart wheel by @astrodraw/astrochart.
+The numerology decoders are inspired by the viral "9 AI prompts" self-discovery trend.
+This is an independent, open-source project **for reflection and entertainment** — not
+astrology advice, diagnosis, or prediction.
 
 ## License
 

@@ -4,10 +4,10 @@
 import {
   lifePathNumber, birthdayNumber, attitudeNumber, personalYearNumber,
   pinnacles, challenges, expressionNumber, soulUrgeNumber, maturityNumber, reduceNumber,
-} from "../assets/js/numerology.js";
-import { sunSign, signInfo, chineseZodiac, dayOfWeek } from "../assets/js/zodiac.js";
-import { DECODERS, fillPrompt } from "../assets/js/prompts.js";
-import { buildDecoder, buildSummary } from "../assets/js/decoders.js";
+} from "../src/engine/numerology.js";
+import { sunSign, signInfo, chineseZodiac, dayOfWeek } from "../src/engine/zodiac.js";
+import { DECODERS, fillPrompt } from "../src/engine/prompts.js";
+import { buildDecoder, buildSummary } from "../src/engine/decoders.js";
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July",
   "August", "September", "October", "November", "December"];

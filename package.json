@@ -1,14 +1,24 @@
 {
   "name": "inner-lens",
-  "version": "1.0.0",
-  "description": "AI Self-Discovery web app — decode personality, career and purpose from your birth date. A web-app take on the viral '9 AI prompts' trend.",
+  "version": "2.0.0",
+  "description": "Inner Lens — a full astrology + self-discovery web app. Western natal charts, Vedic (Jyotish) charts with nakshatras & Vimshottari dasha, transits, synastry, numerology and grounded AI readings.",
   "type": "module",
   "private": true,
   "scripts": {
-    "test": "node scripts/sanity.mjs",
-    "start": "npx --yes serve ."
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "test": "node scripts/sanity.mjs && node scripts/astro-test.mjs",
+    "server": "node server/opus-proxy.mjs"
   },
-  "keywords": ["astrology", "numerology", "self-discovery", "ai", "personality", "static-site"],
+  "keywords": ["astrology", "natal-chart", "vedic", "jyotish", "numerology", "horoscope", "self-discovery", "ai"],
   "license": "MIT",
-  "homepage": "https://github.com/sidhartha-patra/inner-lens"
+  "homepage": "https://github.com/sidhartha-patra/inner-lens",
+  "dependencies": {
+    "@astrodraw/astrochart": "^3.0.2",
+    "circular-natal-horoscope-js": "^1.1.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
 }

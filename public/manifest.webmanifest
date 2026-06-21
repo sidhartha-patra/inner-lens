@@ -1,0 +1,15 @@
+{
+  "name": "Inner Lens — Astrology & Self-Discovery",
+  "short_name": "Inner Lens",
+  "description": "Western natal charts, Vedic nakshatras & dasha, transits, compatibility, numerology and grounded AI readings — from your birth details.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0a18",
+  "theme_color": "#0a0a18",
+  "categories": ["lifestyle", "education", "entertainment"],
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

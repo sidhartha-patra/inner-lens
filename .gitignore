@@ -9,5 +9,11 @@ Thumbs.db
 node_modules/
 npm-debug.log*
 
+# Build output (Pages builds this in CI)
+dist/
+
+# Local scratch
+.copilotlog/
+
 # Local notes
 plan.md
