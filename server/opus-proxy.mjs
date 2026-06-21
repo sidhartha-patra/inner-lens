@@ -5,7 +5,7 @@
 //   node server/opus-proxy.mjs           (or: npm run server)
 //
 // Then in the Inner Lens web app, open Live AI, pick "Copilot Opus 4.8 (local)"
-// (base URL http://localhost:8765/v1, model claude-opus-4.8) and Save.
+// (base URL http://localhost:8787/v1, model claude-opus-4.8) and Save.
 //
 // Why the flags: the CLI normally loads your ~/.copilot MCP servers (35 of them
 // here) which makes a cold prompt hang for minutes. We disable every MCP server
@@ -17,7 +17,7 @@ import { readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
-const PORT = process.env.OPUS_PROXY_PORT ? Number(process.env.OPUS_PROXY_PORT) : 8765;
+const PORT = process.env.OPUS_PROXY_PORT ? Number(process.env.OPUS_PROXY_PORT) : 8787;
 const DEFAULT_MODEL = "claude-opus-4.8";
 const TIMEOUT_MS = 240000;
 

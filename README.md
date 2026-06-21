@@ -43,7 +43,7 @@ Run Claude Opus 4.8 locally through the Copilot CLI — no API key, nothing leav
 except the chart facts you send to the model.
 
 ```bash
-npm run server     # starts http://localhost:8765  (leave it running)
+npm run server     # starts http://localhost:8787  (leave it running)
 ```
 
 Then in the app: **Live AI → "Copilot Opus 4.8 (local)" → Save**. The server is an
@@ -58,7 +58,7 @@ It auto-discovers and disables your `~/.copilot` MCP servers so a request return
 of pure model output instead of hanging on MCP startup. Configure the port with
 `OPUS_PROXY_PORT`.
 
-> The deployed HTTPS site can still call `http://localhost:8765` — browsers exempt
+> The deployed HTTPS site can still call `http://localhost:8787` — browsers exempt
 > `localhost` from mixed-content blocking.
 
 ### Option B — Bring your own key
