@@ -1,0 +1,14 @@
+{
+  "name": "inner-lens",
+  "version": "1.0.0",
+  "description": "AI Self-Discovery web app — decode personality, career and purpose from your birth date. A web-app take on the viral '9 AI prompts' trend.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node scripts/sanity.mjs",
+    "start": "npx --yes serve ."
+  },
+  "keywords": ["astrology", "numerology", "self-discovery", "ai", "personality", "static-site"],
+  "license": "MIT",
+  "homepage": "https://github.com/sidhartha-patra/inner-lens"
+}
